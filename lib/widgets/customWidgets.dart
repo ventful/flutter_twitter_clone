@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -211,23 +210,21 @@ Widget customInkWell(
     ),
   );
 }
-
-SizedBox sizedBox({double height = 5, String title}) {
-  return SizedBox(
-    height: title == null || title.isEmpty ? 0 : height,
-  );
-}
-
-Widget customNetworkImage(String path, {BoxFit fit = BoxFit.contain}) {
+SizedBox sizedBox({double height = 5, String title}){
+    return SizedBox(
+      height: title == null || title.isEmpty ? 0 : height,
+    );
+  }
+Widget customNetworkImage(String path,{BoxFit fit = BoxFit.contain}){
   return CachedNetworkImage(
     fit: fit,
     imageUrl: path ?? dummyProfilePic,
     imageBuilder: (context, imageProvider) => Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: imageProvider,
-          fit: fit,
-        ),
+            image: imageProvider,
+            fit: fit,
+           ),
       ),
     ),
     placeholderFadeInDuration: Duration(milliseconds: 500),
@@ -235,6 +232,14 @@ Widget customNetworkImage(String path, {BoxFit fit = BoxFit.contain}) {
       color: Color(0xffeeeeee),
     ),
     errorWidget: (context, url, error) => Icon(Icons.error),
+  );
+}
+dynamic customAdvanceNetworkImage(String path){
+if(path == null){
+    path = dummyProfilePic;
+  }
+  return CachedNetworkImageProvider(
+    path ?? dummyProfilePic,
   );
 }
 
