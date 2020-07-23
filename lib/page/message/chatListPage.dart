@@ -46,6 +46,9 @@ class _ChatListPageState extends State<ChatListPage> {
         ),
       );
     } else {
+      if(searchState.userList.isEmpty){
+        searchState.resetFilterList();
+      }
       return ListView.separated(
         physics: BouncingScrollPhysics(),
         itemCount: state.chatUserList.length,

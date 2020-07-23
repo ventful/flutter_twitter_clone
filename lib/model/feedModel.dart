@@ -54,7 +54,7 @@ class FeedModel {
     userId = map['userId'];
     //  name = map['name'];
     //  profilePic = map['profilePic'];
-    likeCount = map['likeCount'];
+    likeCount = map['likeCount'] ?? 0;
     commentCount = map['commentCount'];
     retweetCount = map["retweetCount"] ?? 0;
     imagePath = map['imagePath'];
@@ -72,12 +72,26 @@ class FeedModel {
     }
     if (map["likeList"] != null) {
       likeList = List<String>();
+
       final list = map['likeList'];
+      /// In new tweet db schema likeList is stored as a List<String>()
+      /// 
       if (list is List) {
         map['likeList'].forEach((value) {
-          likeList.add(value);
+          if (value is String) {
+            likeList.add(value);
+          } 
         });
-        likeCount = likeList.length;
+        likeCount = likeList.length ?? 0;
+      }
+      /// In old database tweet db schema likeList is saved in the form of map
+      /// like list map is removed from latest code but to support old schema below code is required
+      /// Once all user migrated to new version like list map support will be removed
+      else if(list is Map){
+        list.forEach((key, value) {
+         likeList.add(value["userId"]);
+        });
+        likeCount = list.length;
       }
     } else {
       likeList = [];

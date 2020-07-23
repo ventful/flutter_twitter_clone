@@ -33,16 +33,17 @@ class ChatState extends AppState {
   String _channelName;
   // Query messageQuery;
 
+  /// Contains list of chat messages on main chat screen
+  /// List is sortBy mesage timeStamp
+  /// Last message will be display on the bottom of screen
   List<ChatMessage> get messageList {
     if (_messageList == null) {
       return null;
     } else {
-      _messageList.sort((x, y) => DateTime.parse(x.createdAt)
+      _messageList.sort((x, y) => DateTime.parse(y.createdAt)
           .toLocal()
-          .compareTo(DateTime.parse(y.createdAt).toLocal()));
-      _messageList.reversed;
-      _messageList = _messageList.reversed.toList();
-      return List.from(_messageList);
+          .compareTo(DateTime.parse(x.createdAt).toLocal()));
+      return _messageList;
     }
   }
 
@@ -87,14 +88,14 @@ class ChatState extends AppState {
   /// For package detail check:-  https://pub.dev/packages/firebase_remote_config#-readme-tab-
   void getFCMServerKey() async {
     final RemoteConfig remoteConfig = await RemoteConfig.instance;
-    await remoteConfig.fetch(expiration: const Duration(hours: 5));
+    await remoteConfig.fetch(expiration: const Duration(days: 5));
     await remoteConfig.activateFetched();
     var data = remoteConfig.getString('FcmServerKey');
     if (data != null && data.isNotEmpty) {
       serverToken = jsonDecode(data)["key"];
-    }
-    else{
-      cprint("Please configure Remote config in firebase", errorIn: "getFCMServerKey");
+    } else {
+      cprint("Please configure Remote config in firebase",
+          errorIn: "getFCMServerKey");
     }
   }
 

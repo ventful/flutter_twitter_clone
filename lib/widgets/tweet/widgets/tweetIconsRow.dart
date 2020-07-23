@@ -31,6 +31,7 @@ class TweetIconsRow extends StatelessWidget {
 
   Widget _likeCommentsIcons(BuildContext context, FeedModel model) {
     var authState = Provider.of<AuthState>(context, listen: false);
+
     return Container(
       color: Colors.transparent,
       padding: EdgeInsets.only(bottom: 0, top: 0),
@@ -143,7 +144,7 @@ class TweetIconsRow extends StatelessWidget {
   }
 
   Widget _likeCommentWidget(BuildContext context) {
-    bool isLikeAvailable = model.likeCount > 0;
+    bool isLikeAvailable = model.likeCount != null ?  model.likeCount > 0 : false;
     bool isRetweetAvailable = model.retweetCount > 0;
     bool isLikeRetweetAvailable = isRetweetAvailable || isLikeAvailable;
     return Column(
@@ -229,6 +230,8 @@ class TweetIconsRow extends StatelessWidget {
         builder: (BuildContext context) => UsersListPage(
           pageTitle: "Liked by",
           userIdsList: model.likeList.map((userId) => userId).toList(),
+          emptyScreenText: "This tweet has no like yet",
+          emptyScreenSubTileText: "Once a user likes this tweet, user list will be shown here",
         ),
       ),
     );
